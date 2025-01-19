@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <sys/wait.h>
 
 typedef struct s_list
 {
