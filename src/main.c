@@ -18,6 +18,16 @@ char *mkpath(char *path, char *cmd)
 	return (out);
 }
 
+void free_arr(char **arr)
+{
+	int i;
+
+	i = -1;
+	while (arr[++i])
+		free(arr[i]);
+	free(arr);
+}
+
 char *which(char *cmd, char **envp)
 {
 	int i;
@@ -29,7 +39,7 @@ char *which(char *cmd, char **envp)
 		;
 	out = mkpath(envp[i] + 4, cmd);
 	if (open(out, O_RDONLY) != -1)
-		return (out);
+		return (free(cmd), out);
 	i = -1;
 	while (!ft_strnstr(envp[++i], "PATH=", 5))
 		;
@@ -39,23 +49,26 @@ char *which(char *cmd, char **envp)
 	{
 		out = mkpath(path[i], cmd);
 		if (open(out, O_RDONLY) != -1)
-		{
-			// free_arr(path);
-			return (out);
-		}
+			return (free_arr(path), free(cmd), out);
+		free(out);
 	}
-	return (NULL);
+	return (cmd);
 }
 
-int exec(char *cmd, char **envp)
+void exec(char *cmd, char **envp)
 {
+	int result;
 	char **args;
 
 	args = ft_split(cmd, ' ');
 	args[0] = which(args[0], envp);
-	if (execve(args[0], args, envp) == -1)
-		return (-1);
-	return (0);
+	result = execve(args[0], args, envp);
+	free_arr(args);
+	if (result == -1)
+	{
+		perror("Command not found");
+		exit(1);
+	}
 }
 
 int pipex(char *cmd, char **envp)
@@ -93,6 +106,11 @@ int main(int ac, char **av, char **envp)
 		return (1);
 	fdin = open(av[1], O_RDONLY);
 	fdout = open(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (fdin == -1 || fdout == -1)
+	{
+		perror("Error opening file");
+		exit(1);
+	}
 	dup2(fdin, STDIN_FILENO);
 	i = 1;
 	while (++i < ac - 2)
