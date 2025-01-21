@@ -32,43 +32,51 @@ char *which(char *cmd, char **envp)
 {
 	int i;
 	char *out;
-	char **path;
+	char *path;
 
 	i = -1;
 	while (!ft_strnstr(envp[++i], "PWD=", 4))
 		;
 	out = mkpath(envp[i] + 4, cmd);
 	if (open(out, O_RDONLY) != -1)
-		return (free(cmd), out);
+		return (out);
+	free(out);
 	i = -1;
 	while (!ft_strnstr(envp[++i], "PATH=", 5))
 		;
-	path = ft_split(envp[i] + 5, ':');
-	i = -1;
-	while (path[++i])
+	path = ft_strtok(ft_strdup(envp[i] + 5), ':');
+	while (path)
 	{
-		out = mkpath(path[i], cmd);
+		out = mkpath(path, cmd);
 		if (open(out, O_RDONLY) != -1)
-			return (free_arr(path), free(cmd), out);
+			return (out);
 		free(out);
+		path = ft_strtok(NULL, ':');
 	}
 	return (cmd);
 }
 
 void exec(char *cmd, char **envp)
 {
-	int result;
+	char *dup;
 	char **args;
-
-	args = ft_split(cmd, ' ');
-	args[0] = which(args[0], envp);
-	result = execve(args[0], args, envp);
-	free_arr(args);
-	if (result == -1)
-	{
-		perror("Command not found");
-		exit(1);
-	}
+	int i;
+	
+	dup = ft_strdup(cmd);
+	if (!dup)
+		return ;
+	i = count_words(cmd, ' ');
+	args = malloc(sizeof(char *) * (i + 1));
+	args[i] = NULL;
+	args[0] = which(ft_strtok(dup, ' '), envp);
+	i = -1;
+	while (args[++i] != NULL)
+		args[i + 1] = ft_strtok(NULL, ' ');
+	execve(args[0], args, envp);
+	free(args[0]);
+	free(args);
+	perror("Command not found");
+	exit(1);
 }
 
 int pipex(char *cmd, char **envp)

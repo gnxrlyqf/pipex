@@ -24,6 +24,9 @@ t_list	*add_node(t_list **head, char c);
 void	free_list(t_list **head);
 char	*make_str(t_list **head, int size);
 int		listchr_len(t_list *head);
+char	*ft_strtok(char *str, char delim);
+int		count_words(const char *str, char c);
+char	*ft_strdup(char *src);
 
 
 #endif
