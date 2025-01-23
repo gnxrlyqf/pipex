@@ -105,7 +105,10 @@ void	here_doc(char *eof)
 		if (!str)
 			throw_err(4);
 		if (ft_strncmp(str, eof, ft_strlen(str) - 1) == 0)
+		{
+			free(str);
 			break ;
+		}
 		write(fd, str, ft_strlen(str));
 		free(str);
 	}
