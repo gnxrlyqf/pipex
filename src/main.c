@@ -1,5 +1,5 @@
 /* ************************************************************************** */
- /*                                                                            */
+/*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
@@ -47,12 +47,12 @@ void	exec(char *cmd, char **envp)
 	char	*save;
 	char	**args;
 	int		i;
-	
+
 	if (!*cmd)
 		throw_err(6);
 	dup = ft_strdup(cmd);
 	if (!dup)
-		throw_err(4) ;
+		throw_err(4);
 	i = wc(cmd, ' ');
 	args = malloc(sizeof(char *) * (i + 1));
 	if (!args)
@@ -71,7 +71,7 @@ void	exec(char *cmd, char **envp)
 void	pipex(char *cmd, char **envp)
 {
 	int		fdp[2];
-	pid_t pid;
+	pid_t	pid;
 
 	if (pipe(fdp) == -1)
 		throw_err(5);
@@ -128,7 +128,7 @@ int	main(int ac, char **av, char **envp)
 	{
 		if (!(ac > 5) || !*(av[2]))
 			throw_err(1);
-		here_doc(av[2]);	
+		here_doc(av[2]);
 		flags |= O_TRUNC;
 	}
 	else if (dup2(open(av[1], O_RDONLY), STDIN_FILENO) == -1)
