@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/main.h"
+#include <pipex.h>
 
 int	contains_nl(char *str)
 {

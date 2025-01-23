@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/main.h"
+#include <pipex.h>
 
 t_list	*add_node(t_list **head, char c)
 {
