@@ -136,7 +136,7 @@ int	main(int ac, char **av, char **envp)
 	i = 1 + 1 * (flags == (O_WRONLY | O_CREAT | O_APPEND | O_TRUNC));
 	while (++i < ac - 2)
 		pipex(av[i], envp);
-	if (dup2(open(av[ac - 1], flags, 0777), STDOUT_FILENO) == -1)
+	if (dup2(open(av[ac - 1], flags, 0600), STDOUT_FILENO) == -1)
 		throw_err(3);
 	exec(av[ac - 2], envp);
 	return (0);
