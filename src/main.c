@@ -125,7 +125,7 @@ int	main(int ac, char **av, char **envp)
 	flags = O_WRONLY | O_CREAT | O_APPEND;
 	if (ac < 5)
 		throw_err(1);
-	if (!ft_strcmp(av[1], "here_doc"))
+	if (!ft_strncmp(av[1], "here_doc", ft_strlen("here_doc")))
 	{
 		if (!(ac > 5) || !*(av[2]))
 			throw_err(1);

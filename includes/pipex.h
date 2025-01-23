@@ -18,6 +18,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <sys/wait.h>
+# include <string.h>
 
 typedef struct s_list
 {
@@ -36,7 +37,6 @@ void	exec(char *cmd, char **envp);
 void	pipex(char *cmd, char **envp);
 int		here_doc(char *eof);
 int		main(int ac, char **av, char **envp);
-int		ft_strcmp(char *s1, char *s2);
 int		ft_strncmp(char *s1, char *s2, int n);
 char	*which(char *cmd, char **envp);
 char	*mkpath(char *path, char *cmd);

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/23 10:56:17 by mchetoui          #+#    #+#             */
-/*   Updated: 2025/01/23 10:56:35 by mchetoui         ###   ########.fr       */
+/*   Created: 2025/01/23 10:56:54 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/01/23 10:58:17 by mchetoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,73 +33,52 @@ int	wc(const char *str, char c)
 	return (count);
 }
 
-char	*ft_strnstr(char *big, char *little, size_t len)
+char	*mkpath(char *path, char *cmd)
 {
-	size_t	i;
-	size_t	j;
-	char	*temp;
+	char	*out;
+	int		i;
 
-	if (!big || !little || !*little)
-		return (big);
+	out = malloc((size_t)(ft_strlen(path) + ft_strlen(cmd) + 2));
+	if (!out)
+		throw_err(4);
 	i = 0;
-	while (big[i] && i < len)
-	{
-		if (big[i] == *little)
-		{
-			j = i;
-			temp = little;
-			while (*temp && *temp == big[j] && j++ < len)
-				temp++;
-			if (!*temp)
-				return (big + i);
-		}
-		i++;
-	}
+	while (*path)
+		out[i++] = *(path++);
+	out[i++] = '/';
+	while (*cmd)
+		out[i++] = *(cmd++);
+	out[i] = 0;
+	return (out);
+}
+
+char	*is_pwd(char *cmd, char **envp)
+{
+	char	*out;
+	int		i;
+
+	i = -1;
+	while (!ft_strnstr(envp[++i], "PWD=", 4))
+		;
+	out = mkpath(envp[i] + 4, cmd);
+	if (!access(out, F_OK | X_OK))
+		return (out);
+	free(out);
 	return (NULL);
 }
 
-int	ft_strlen(const char *str)
+void	throw_err(int err)
 {
-	int	len;
-
-	len = 0;
-	while (*(str++))
-		len++;
-	return (len);
-}
-
-char	*ft_strdup(char *src)
-{
-	int		i;
-	char	*new;
-
-	new = malloc((ft_strlen(src) + 1) * sizeof(char));
-	if (!new || !src)
-		return (NULL);
-	i = -1;
-	while (src[++i])
-		new[i] = src[i];
-	new[i] = '\0';
-	return (new);
-}
-
-char	*ft_strtok_r(char *str, char delim, char **save)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		str = *save;
-	while (*str && *str == delim)
-		str++;
-	if (!*str)
-		return (NULL);
-	while (*str && *str != delim)
-	{
-		i++;
-		str++;
-	}
-	*save = str + 1 * (*str != 0);
-	*str = 0;
-	return (str - i);
+	if (err == 1)
+		write(2, "Error: Bad syntax.\n", 19);
+	if (err == 2)
+		write(2, "Error: Input file not found.\n", 30);
+	if (err == 3)
+		write(2, "Error: Opening output file failed.\n", 35);
+	if (err == 4)
+		write(2, "Error: Malloc fail.\n", 20);
+	if (err == 5)
+		write(2, "Error: fork()/pipe() fail.\n", 27);
+	if (err == 6)
+		write(2, "Error: Command not found.\n", 26);
+	exit(err);
 }

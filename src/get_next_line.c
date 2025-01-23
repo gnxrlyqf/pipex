@@ -33,7 +33,8 @@ char	*get_next_line(int fd)
 	ssize_t			size;
 	static t_list	*head;
 
-	str = malloc(1024);
+	size = 256;
+	str = malloc(size);
 	if (fd < 0 || !str)
 		return (free(str), NULL);
 	while (1)
