@@ -92,7 +92,7 @@ void	pipex(char *cmd, char **envp)
 	}
 }
 
-int	here_doc(char *eof)
+void	here_doc(char *eof)
 {
 	int		fd;
 	char	*str;
@@ -114,7 +114,6 @@ int	here_doc(char *eof)
 	dup2(fd, STDIN_FILENO);
 	close(fd);
 	unlink("/tmp/pipex_heredoc");
-	return (O_TRUNC);
 }
 
 int	main(int ac, char **av, char **envp)
@@ -129,7 +128,8 @@ int	main(int ac, char **av, char **envp)
 	{
 		if (!(ac > 5) || !*(av[2]))
 			throw_err(1);
-		flags |= here_doc(av[2]);
+		here_doc(av[2]);	
+		flags |= O_TRUNC;
 	}
 	else if (dup2(open(av[1], O_RDONLY), STDIN_FILENO) == -1)
 		throw_err(2);
