@@ -1,12 +1,12 @@
 /* ************************************************************************** */
-/*                                                                            */
+ /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 10:54:37 by mchetoui          #+#    #+#             */
-/*   Updated: 2025/01/23 10:55:59 by mchetoui         ###   ########.fr       */
+/*   Updated: 2025/01/23 10:55:35 by mchetoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,12 @@ void	exec(char *cmd, char **envp)
 	char	*save;
 	char	**args;
 	int		i;
-
+	
+	if (!*cmd)
+		throw_err(6);
 	dup = ft_strdup(cmd);
 	if (!dup)
-		return ;
+		throw_err(4) ;
 	i = wc(cmd, ' ');
 	args = malloc(sizeof(char *) * (i + 1));
 	if (!args)
@@ -69,7 +71,7 @@ void	exec(char *cmd, char **envp)
 void	pipex(char *cmd, char **envp)
 {
 	int		fdp[2];
-	pid_t	pid;
+	pid_t pid;
 
 	if (pipe(fdp) == -1)
 		throw_err(5);
@@ -90,13 +92,11 @@ void	pipex(char *cmd, char **envp)
 	}
 }
 
-int	here_doc(char *eof, int ac)
+int	here_doc(char *eof)
 {
 	int		fd;
 	char	*str;
 
-	if (!(ac > 5))
-		throw_err(1);
 	fd = open("/tmp/pipex_heredoc", O_CREAT | O_WRONLY, 0600);
 	while (1)
 	{
@@ -125,8 +125,12 @@ int	main(int ac, char **av, char **envp)
 	flags = O_WRONLY | O_CREAT | O_APPEND;
 	if (ac < 5)
 		throw_err(1);
-	if (!ft_strcmp(av[1], "here_doc") && *(av[2]))
-		flags |= here_doc(av[2], ac);
+	if (!ft_strcmp(av[1], "here_doc"))
+	{
+		if (!(ac > 5) || !*(av[2]))
+			throw_err(1);
+		flags |= here_doc(av[2]);
+	}
 	else if (dup2(open(av[1], O_RDONLY), STDIN_FILENO) == -1)
 		throw_err(2);
 	i = 1 + 1 * (flags == (O_WRONLY | O_CREAT | O_APPEND | O_TRUNC));

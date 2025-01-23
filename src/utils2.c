@@ -74,11 +74,11 @@ char	*is_pwd(char *cmd, char **envp)
 void	throw_err(int err)
 {
 	if (err == 1)
-		write(2, "Error: Bad syntax.\n", 12);
+		write(2, "Error: Bad syntax.\n", 19);
 	if (err == 2)
-		write(2, "Error: Input file not found.\n", 22);
+		write(2, "Error: Input file not found.\n", 30);
 	if (err == 3)
-		write(2, "Error: Opening output file failed.\n", 28);
+		write(2, "Error: Opening output file failed.\n", 35);
 	if (err == 4)
 		write(2, "Error: Malloc fail.\n", 20);
 	if (err == 5)

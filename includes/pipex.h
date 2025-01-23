@@ -34,7 +34,7 @@ char	*make_str(t_list **head, int size);
 int		listchr_len(t_list *head);
 void	exec(char *cmd, char **envp);
 void	pipex(char *cmd, char **envp);
-int		here_doc(char *eof, int ac);
+int		here_doc(char *eof);
 int		main(int ac, char **av, char **envp);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_strncmp(char *s1, char *s2, int n);
