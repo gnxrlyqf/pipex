@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/23 10:54:37 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/01/23 10:55:59 by mchetoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <pipex.h>
 
-char *which(char *cmd, char **envp)
+char	*which(char *cmd, char **envp)
 {
-	int i;
-	char *out;
-	char *path;
-	char *dup;
-	char *save;
+	int		i;
+	char	*out;
+	char	*path;
+	char	*dup;
+	char	*save;
 
 	out = is_pwd(cmd, envp);
 	if (out)
@@ -29,13 +41,13 @@ char *which(char *cmd, char **envp)
 	return (free(dup), cmd);
 }
 
-void exec(char *cmd, char **envp)
+void	exec(char *cmd, char **envp)
 {
-	char *dup;
-	char *save;
-	char **args;
-	int i;
-	
+	char	*dup;
+	char	*save;
+	char	**args;
+	int		i;
+
 	dup = ft_strdup(cmd);
 	if (!dup)
 		return ;
@@ -54,10 +66,10 @@ void exec(char *cmd, char **envp)
 	throw_err(6);
 }
 
-void pipex(char *cmd, char **envp)
+void	pipex(char *cmd, char **envp)
 {
-	int fdp[2];
-	pid_t pid;
+	int		fdp[2];
+	pid_t	pid;
 
 	if (pipe(fdp) == -1)
 		throw_err(5);
@@ -78,10 +90,10 @@ void pipex(char *cmd, char **envp)
 	}
 }
 
-int here_doc(char *eof, int ac)
+int	here_doc(char *eof, int ac)
 {
-	int fd;
-	char *str;
+	int		fd;
+	char	*str;
 
 	if (!(ac > 5))
 		throw_err(1);
@@ -105,10 +117,10 @@ int here_doc(char *eof, int ac)
 	return (O_TRUNC);
 }
 
-int main(int ac, char **av, char **envp)
+int	main(int ac, char **av, char **envp)
 {
-	int i;
-	int flags;
+	int	i;
+	int	flags;
 
 	flags = O_WRONLY | O_CREAT | O_APPEND;
 	if (ac < 5)

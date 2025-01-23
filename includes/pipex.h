@@ -1,11 +1,23 @@
-#ifndef MAIN_H
-#define MAIN_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/23 10:59:19 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/01/23 11:00:12 by mchetoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/wait.h>
+#ifndef PIPEX_H
+# define PIPEX_H
+
+# include <stdio.h>
+# include <stdlib.h>
+# include <fcntl.h>
+# include <unistd.h>
+# include <sys/wait.h>
 
 typedef struct s_list
 {
@@ -37,4 +49,3 @@ char	*ft_strdup(char *src);
 char	*ft_strtok_r(char *str, char delim, char **save);
 
 #endif
-

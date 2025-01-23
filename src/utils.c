@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/23 10:56:17 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/01/23 10:56:35 by mchetoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <pipex.h>
 
 int	wc(const char *str, char c)
@@ -71,9 +83,9 @@ char	*ft_strdup(char *src)
 	return (new);
 }
 
-char *ft_strtok_r(char *str, char delim, char **save)
+char	*ft_strtok_r(char *str, char delim, char **save)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!str)

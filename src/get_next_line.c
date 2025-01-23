@@ -6,7 +6,7 @@
 /*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 23:25:40 by mchetoui          #+#    #+#             */
-/*   Updated: 2024/11/24 18:37:06 by mchetoui         ###   ########.fr       */
+/*   Updated: 2025/01/23 11:01:10 by mchetoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	contains_nl(char *str)
 	return (0);
 }
 
-void populate_list(t_list **head, char *str)
+void	populate_list(t_list **head, char *str)
 {
 	while (*str)
 		if (!add_node(head, *(str++)))

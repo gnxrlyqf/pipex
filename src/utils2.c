@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils2.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/23 10:56:54 by mchetoui          #+#    #+#             */
+/*   Updated: 2025/01/23 10:58:17 by mchetoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <pipex.h>
 
 int	ft_strcmp(char *s1, char *s2)
@@ -25,10 +37,11 @@ int	ft_strncmp(char *s1, char *s2, int n)
 		return (0);
 	return (*s1 - *s2);
 }
-char *mkpath(char *path, char *cmd)
+
+char	*mkpath(char *path, char *cmd)
 {
-	char *out;
-	int i;
+	char	*out;
+	int		i;
 
 	out = malloc((size_t)(ft_strlen(path) + ft_strlen(cmd) + 2));
 	if (!out)
@@ -43,10 +56,10 @@ char *mkpath(char *path, char *cmd)
 	return (out);
 }
 
-char *is_pwd(char *cmd, char **envp)
+char	*is_pwd(char *cmd, char **envp)
 {
-	char *out;
-	int i;
+	char	*out;
+	int		i;
 
 	i = -1;
 	while (!ft_strnstr(envp[++i], "PWD=", 4))
@@ -58,7 +71,7 @@ char *is_pwd(char *cmd, char **envp)
 	return (NULL);
 }
 
-void throw_err(int err)
+void	throw_err(int err)
 {
 	if (err == 1)
 		write(2, "Error: Bad syntax.\n", 12);
