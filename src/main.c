@@ -121,19 +121,19 @@ int	main(int ac, char **av, char **envp)
 	int	i;
 	int	flags;
 
-	flags = O_WRONLY | O_CREAT | O_APPEND;
+	flags = O_WRONLY | O_CREAT | O_APPEND | O_TRUNC;
 	if (ac < 5)
 		throw_err(1);
-	if (!ft_strncmp(av[1], "here_doc", ft_strlen("here_doc")))
+	if (!ft_strncmp(av[1], "here_doc", 8))
 	{
 		if (!(ac > 5) || !*(av[2]))
 			throw_err(1);
 		here_doc(av[2]);
-		flags |= O_TRUNC;
+		flags &= ~O_TRUNC;
 	}
 	else if (dup2(open(av[1], O_RDONLY), STDIN_FILENO) == -1)
 		throw_err(2);
-	i = 1 + 1 * (flags == (O_WRONLY | O_CREAT | O_APPEND | O_TRUNC));
+	i = 2 - 1 * (flags == (O_WRONLY | O_CREAT | O_APPEND | O_TRUNC));
 	while (++i < ac - 2)
 		pipex(av[i], envp);
 	if (dup2(open(av[ac - 1], flags, 0600), STDOUT_FILENO) == -1)
