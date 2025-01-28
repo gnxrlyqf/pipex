@@ -40,7 +40,7 @@ int		main(int ac, char **av, char **envp);
 int		ft_strncmp(char *s1, char *s2, int n);
 char	*which(char *cmd, char **envp);
 char	*mkpath(char *path, char *cmd);
-char	*check_pwd(char *cmd, char **envp);
+char	*check_cwd(char *cmd, char **envp);
 void	throw_err(int err);
 int		wc(const char *str, char c);
 char	*ft_strnstr(char *big, char *little, size_t len);

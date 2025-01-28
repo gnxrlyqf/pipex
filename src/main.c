@@ -19,7 +19,7 @@ char	*which(char *cmd, char **envp)
 	char	*path;
 	char	*dup;
 
-	while (*envp && !ft_strnstr(*envp, "PATH=", 5))
+	while (*envp && ft_strncmp(*envp, "PATH=", 5))
 		envp++;
 	if (!*envp)
 		throw_err(6);
@@ -35,7 +35,7 @@ char	*which(char *cmd, char **envp)
 		free(out);
 		path = ft_strtok_r(NULL, ':', &save);
 	}
-	return (free(dup), check_pwd(cmd, envp));
+	return (free(dup), check_cwd(cmd, envp));
 }
 
 void	exec(char *cmd, char **envp)

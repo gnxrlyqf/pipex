@@ -51,13 +51,13 @@ char	*mkpath(char *path, char *cmd)
 	return (out);
 }
 
-char	*check_pwd(char *cmd, char **envp)
+char	*check_cwd(char *cmd, char **envp)
 {
 	char	*out;
 	int		i;
 
 	i = -1;
-	while (!ft_strnstr(envp[++i], "PWD=", 4))
+	while (ft_strncmp(envp[++i], "PWD=", 4))
 		;
 	if (!envp[i])
 		throw_err(4);
