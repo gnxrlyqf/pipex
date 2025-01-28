@@ -14,19 +14,19 @@
 
 char	*which(char *cmd, char **envp)
 {
-	int		i;
+	char	*save;
 	char	*out;
 	char	*path;
 	char	*dup;
-	char	*save;
 
 	out = is_pwd(cmd, envp);
 	if (out)
 		return (out);
-	i = -1;
-	while (!ft_strnstr(envp[++i], "PATH=", 5))
-		;
-	dup = ft_strdup(envp[i] + 5);
+	while (*envp && !ft_strnstr(*envp, "PATH=", 5))
+		envp++;
+	if (!*envp)
+		throw_err(6);
+	dup = ft_strdup(*envp + 5);
 	if (!dup)
 		throw_err(4);
 	path = ft_strtok_r(dup, ':', &save);

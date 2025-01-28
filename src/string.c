@@ -66,7 +66,7 @@ char	*ft_strdup(char *src)
 	char	*new;
 
 	new = malloc((ft_strlen(src) + 1) * sizeof(char));
-	if (!new || !src)
+	if (!src || !new)
 		return (NULL);
 	i = -1;
 	while (src[++i])

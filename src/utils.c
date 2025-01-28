@@ -59,6 +59,8 @@ char	*is_pwd(char *cmd, char **envp)
 	i = -1;
 	while (!ft_strnstr(envp[++i], "PWD=", 4))
 		;
+	if (!envp[i])
+		throw_err(4);
 	out = mkpath(envp[i] + 4, cmd);
 	if (!access(out, F_OK | X_OK))
 		return (out);
