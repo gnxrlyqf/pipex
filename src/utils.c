@@ -51,7 +51,7 @@ char	*mkpath(char *path, char *cmd)
 	return (out);
 }
 
-char	*is_pwd(char *cmd, char **envp)
+char	*check_pwd(char *cmd, char **envp)
 {
 	char	*out;
 	int		i;
@@ -65,7 +65,7 @@ char	*is_pwd(char *cmd, char **envp)
 	if (!access(out, F_OK | X_OK))
 		return (out);
 	free(out);
-	return (NULL);
+	return (cmd);
 }
 
 void	throw_err(int err)
