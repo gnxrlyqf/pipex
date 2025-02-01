@@ -75,13 +75,16 @@ int	open_files(char *infile, char *outfile, int flags)
 	int	fd1;
 	int	fd2;
 
-	fd1 = open(infile, O_RDONLY);
-	if (fd1 == -1)
+	if (infile)
 	{
-		throw_err(2, infile);
-		fd1 = open("/dev/null", O_RDONLY);
+		fd1 = open(infile, O_RDONLY);
+		if (fd1 == -1)
+		{
+			throw_err(2, infile);
+			fd1 = open("/dev/null", O_RDONLY);
+		}
+		dup2(fd1, STDIN_FILENO);
 	}
-	dup2(fd1, STDIN_FILENO);
 	fd2 = open(outfile, flags, 0600);
 	if (fd2 == -1)
 	{

@@ -133,6 +133,7 @@ int	main(int ac, char **av, char **envp)
 			throw_err(1, NULL);
 		here_doc(av[2]);
 		flags &= ~O_TRUNC;
+		out = open_files(NULL, av[ac - 1], flags);
 	}
 	else
 		out = open_files(av[1], av[ac - 1], flags);
