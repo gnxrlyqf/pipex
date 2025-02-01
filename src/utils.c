@@ -38,9 +38,11 @@ char	*mkpath(char *path, char *cmd)
 	char	*out;
 	int		i;
 
+	if (*cmd == '/')
+		return (NULL);
 	out = malloc((size_t)(ft_strlen(path) + ft_strlen(cmd) + 2));
 	if (!out)
-		throw_err(4);
+		throw_err(3, NULL);
 	i = 0;
 	while (*path)
 		out[i++] = *(path++);
@@ -60,7 +62,7 @@ char	*check_cwd(char *cmd, char **envp)
 	while (ft_strncmp(envp[++i], "PWD=", 4))
 		;
 	if (!envp[i])
-		throw_err(4);
+		throw_err(6, cmd);
 	out = mkpath(envp[i] + 4, cmd);
 	if (!access(out, F_OK | X_OK))
 		return (out);
@@ -68,19 +70,49 @@ char	*check_cwd(char *cmd, char **envp)
 	return (cmd);
 }
 
-void	throw_err(int err)
+int		open_files(char *infile, char *outfile, int flags)
+{
+	int	fd1;
+	int	fd2;
+
+	fd1 = open(infile, O_RDONLY);
+	if (fd1 == -1)
+	{
+		throw_err(2, infile);
+		fd1 = open("/dev/null", O_RDONLY);
+	}
+	dup2(fd1, STDIN_FILENO);
+	fd2 = open(outfile, flags, 0600);
+	if (fd2 == -1)
+	{
+		throw_err(2, outfile);
+		fd2 = open("/dev/null", O_RDONLY);
+	}
+	return (fd2);
+}
+
+void	throw_err(int err, char *str)
 {
 	if (err == 1)
-		write(2, "Error: Bad syntax.\n", 19);
+		write(2, "Bad syntax.\n", 12);
 	if (err == 2)
-		write(2, "Error: Input file not found.\n", 30);
+	{
+		write(2, "open(): ", 8);
+		write(2, strerror(errno), ft_strlen(strerror(errno)));
+		write(2, ": ", 2);
+		write(2, str, ft_strlen(str));
+		write(2, "\n", 1);
+	}
 	if (err == 3)
-		write(2, "Error: Opening output file failed.\n", 35);
+		write(2, "Malloc fail.\n", 13);
 	if (err == 4)
-		write(2, "Error: Malloc fail.\n", 20);
+		perror(str);
 	if (err == 5)
-		write(2, "Error: fork()/pipe() fail.\n", 27);
-	if (err == 6)
-		write(2, "Error: Command not found.\n", 26);
-	exit(err);
+	{
+		write(2, "execve(): Command not found: ", 29);
+		write(2, str, ft_strlen(str));
+		write(2, "\n", 1);
+	}
+	if (err == 1 || err == 3 || err == 4 || err == 5)
+		exit (err);
 }

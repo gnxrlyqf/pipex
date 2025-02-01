@@ -49,19 +49,27 @@ char	*ft_strdup(char *src)
 	new[i] = '\0';
 	return (new);
 }
+char	*ft_strchr(char *str, int c)
+{
+	while (*str && *str != c)
+		str++;
+	if (!*str && c)
+		return (NULL);
+	return (str);
+}
 
-char	*ft_strtok_r(char *str, char delim, char **save)
+char	*ft_strtok_r(char *str, char *delims, char **save)
 {
 	int	i;
 
 	i = 0;
 	if (!str)
 		str = *save;
-	while (*str && *str == delim)
+	while (*str && ft_strchr(delims, *str))
 		str++;
 	if (!*str)
 		return (NULL);
-	while (*str && *str != delim)
+	while (*str && !ft_strchr(delims, *str))
 	{
 		i++;
 		str++;

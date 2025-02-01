@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <sys/wait.h>
 # include <string.h>
+# include <errno.h>
 
 typedef struct s_list
 {
@@ -41,11 +42,12 @@ int		ft_strncmp(char *s1, char *s2, int n);
 char	*which(char *cmd, char **envp);
 char	*mkpath(char *path, char *cmd);
 char	*check_cwd(char *cmd, char **envp);
-void	throw_err(int err);
+void	throw_err(int err, char *str);
 int		wc(const char *str, char c);
-char	*ft_strnstr(char *big, char *little, size_t len);
 int		ft_strlen(const char *str);
 char	*ft_strdup(char *src);
-char	*ft_strtok_r(char *str, char delim, char **save);
+char	*ft_strchr(char *str, int c);
+char	*ft_strtok_r(char *str, char *delims, char **save);
+int		open_files(char *infile, char *outfile, int flags);
 
 #endif
