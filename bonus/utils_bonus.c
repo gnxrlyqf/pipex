@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -75,7 +75,6 @@ int	open_files(char *infile, char *outfile, int flags)
 	int	fd1;
 	int	fd2;
 
-	flags = O_WRONLY | O_CREAT | O_APPEND | O_TRUNC;
 	fd1 = open(infile, O_RDONLY);
 	if (fd1 == -1)
 	{

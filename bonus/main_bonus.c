@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mchetoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -91,15 +91,52 @@ void	pipex(char *cmd, char **envp)
 	}
 }
 
+void	here_doc(char *eof)
+{
+	int		fd;
+	char	*str;
+
+	fd = open("/tmp/pipex_heredoc", O_CREAT | O_WRONLY, 0600);
+	while (1)
+	{
+		write(1, "heredoc> ", 9);
+		str = get_next_line(STDIN_FILENO);
+		if (!str)
+			throw_err(3, NULL);
+		if (ft_strncmp(str, eof, ft_strlen(str) - 1) == 0)
+		{
+			free(str);
+			break ;
+		}
+		write(fd, str, ft_strlen(str));
+		free(str);
+	}
+	close(fd);
+	fd = open("/tmp/pipex_heredoc", O_RDONLY, 0600);
+	dup2(fd, STDIN_FILENO);
+	close(fd);
+	unlink("/tmp/pipex_heredoc");
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	int	i;
+	int	flags;
 	int	out;
 
-	if (ac != 5)
+	flags = O_WRONLY | O_CREAT | O_APPEND | O_TRUNC;
+	if (ac < 5)
 		throw_err(1, NULL);
-	out = open_files(av[1], av[ac - 1], 1);
-	i = 1;
+	if (!ft_strncmp(av[1], "here_doc", 8))
+	{
+		if (!(ac > 5) || !*(av[2]))
+			throw_err(1, NULL);
+		here_doc(av[2]);
+		flags &= ~O_TRUNC;
+	}
+	else
+		out = open_files(av[1], av[ac - 1], flags);
+	i = 2 - 1 * (flags == (O_WRONLY | O_CREAT | O_APPEND | O_TRUNC));
 	while (++i < ac - 2)
 		pipex(av[i], envp);
 	if (dup2(out, STDOUT_FILENO) == -1)
